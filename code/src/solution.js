@@ -205,6 +205,7 @@ const updateHighScore = () => {
 };
 
 window.init = async () => {
+  highScore = parseInt(localStorage.getItem('highScore')) || 0
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
