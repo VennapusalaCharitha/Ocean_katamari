@@ -1,0 +1,11 @@
+Model Information:
+* title:	Trash bag (variation 1)
+* source:	https://sketchfab.com/3d-models/trash-bag-variation-1-5f3247e1c2994b4e856fefd76898ed3e
+* author:	Sam Constance (https://sketchfab.com/ConstanceBespoke)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Trash bag (variation 1)" (https://sketchfab.com/3d-models/trash-bag-variation-1-5f3247e1c2994b4e856fefd76898ed3e) by Sam Constance (https://sketchfab.com/ConstanceBespoke) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

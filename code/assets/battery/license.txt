@@ -1,0 +1,11 @@
+Model Information:
+* title:	Tribes Vengeance Ball
+* source:	https://sketchfab.com/3d-models/tribes-vengeance-ball-6059ab9368b34b32a706457ebb8dd9cb
+* author:	Not Important (https://sketchfab.com/russianworkspace)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Tribes Vengeance Ball" (https://sketchfab.com/3d-models/tribes-vengeance-ball-6059ab9368b34b32a706457ebb8dd9cb) by Not Important (https://sketchfab.com/russianworkspace) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
