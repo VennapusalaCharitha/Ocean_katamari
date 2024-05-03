@@ -10,7 +10,9 @@ let timerInterval;
 let timerSeconds = 30;
 let gameStarted = false;
 let modelsCollected = 0;
-const speedFactor = 0.2;
+let speedFactor = 0.01;
+const acceleration = 0.001;
+let friction = 0.9999;
 let gameControl = true;
 let flashTimer = 0;
 let blinkTimer = 0;
@@ -76,20 +78,32 @@ const updateModelPosition = () => {
   let moveZ = 0;
 
   if (keysPressed['ArrowUp']) {
-    moveZ -= speedFactor * 1.5;
-    moveX -= speedFactor * 1.5;
+    if (speedFactor<0.2){
+      speedFactor += acceleration;
+    }
+    moveZ -= speedFactor;
+    moveX -= speedFactor;
   }
   if (keysPressed['ArrowDown']) {
-    moveZ += speedFactor * 1.5;
-    moveX += speedFactor * 1.5;
+    if (speedFactor<0.2){
+      speedFactor += acceleration;
+    }
+    moveZ += speedFactor;
+    moveX += speedFactor;
   }
   if (keysPressed['ArrowLeft']) {
+    if (speedFactor<0.2){
+      speedFactor += acceleration;
+    }
     moveZ += speedFactor;
-    moveX -= speedFactor * 2;
+    moveX -= speedFactor;
   }
   if (keysPressed['ArrowRight']) {
+    if (speedFactor<0.2){
+      speedFactor += acceleration;
+    }
     moveZ -= speedFactor;
-    moveX += speedFactor * 2;
+    moveX += speedFactor;
   }
 
   if (moveX !== 0 && moveZ !== 0) {
@@ -98,6 +112,10 @@ const updateModelPosition = () => {
     moveZ *= sqrt2over2;
   }
 
+  speedFactor *= friction;
+  if(speedFactor<0){
+    speedFactor = 0;
+  }
   // Update position within boundary
   const boundary = 100; // Set the boundary size
   const newX = porsche.position.x + moveX;
@@ -227,7 +245,7 @@ window.init = async () => {
   const texture = new THREE.TextureLoader().load('./assets/ocean.jpg');
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
-  texture.repeat.set(50, 50);
+  texture.repeat.set(40, 40);
   const material = new THREE.MeshBasicMaterial({
     map: texture,
   });
@@ -337,6 +355,79 @@ window.init = async () => {
   highScoreElement.style.color = 'white';
   document.body.appendChild(highScoreElement);
 
+    // Create mini-map canvas
+    const miniMapCanvas = document.createElement('canvas');
+    miniMapCanvas.width = 200;
+    miniMapCanvas.height = 200;
+    miniMapCanvas.style.position = 'absolute';
+    miniMapCanvas.style.bottom = '10px';
+    miniMapCanvas.style.left = '10px';
+    miniMapCanvas.style.border = '1px solid white';
+    miniMapCanvas.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Example: semi-transparent black
+    document.body.appendChild(miniMapCanvas);
+  
+    // Get 2D context of mini-map canvas
+    const miniMapContext = miniMapCanvas.getContext('2d');
+  
+    // Render mini-map
+    const renderMiniMap = () => {
+      miniMapContext.clearRect(0, 0, miniMapCanvas.width, miniMapCanvas.height);
+  
+      const centerX = miniMapCanvas.width / 2;
+      const centerY = miniMapCanvas.height / 2;
+      const radius = Math.min(centerX, centerY) - 5; // Subtracting 5 to leave some padding
+      
+      // Render circular boundary
+      miniMapContext.strokeStyle = 'white';
+      miniMapContext.lineWidth = 2;
+      miniMapContext.beginPath();
+      miniMapContext.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      miniMapContext.stroke();
+  
+      // Render objects and player position
+      scene.traverse((object) => {
+        const posX = centerX + (object.position.x / 200) * radius;
+        const posY = centerY + (object.position.z / 200) * radius;
+  
+        if (object !== porsche) {
+          // Render objects
+          miniMapContext.fillStyle = 'red';
+          miniMapContext.beginPath();
+          miniMapContext.arc(posX, posY, 3, 0, Math.PI * 2);
+          miniMapContext.fill();
+        } else {
+          // Render player position
+          miniMapContext.fillStyle = 'blue';
+          miniMapContext.beginPath();
+          miniMapContext.arc(posX, posY, 5, 0, Math.PI * 2);
+          miniMapContext.fill();
+        }
+      });
+    };
+  
+  
+    // Main loop
+    const mainLoop = () => {
+      if (porsche) {
+        if (gameControl) {
+          updateModelPosition();
+          blinkModel();
+        }
+  
+        camera.position.copy(porsche.position);
+        camera.position.x += 2;
+        camera.position.z += 2;
+        camera.position.y += 4;
+  
+        renderer.render(scene, camera);
+  
+        renderMiniMap();
+      }
+      requestAnimationFrame(mainLoop);
+    };
+  
+    mainLoop();
+  
 
   window.addEventListener('keydown', handleKeyDown);
   window.addEventListener('keyup', handleKeyUp);
@@ -385,8 +476,8 @@ window.loop = (dt, input) => {
 
     // Set camera position to follow the Porsche model
     camera.position.copy(porsche.position);
-    camera.position.x += 2;
-    camera.position.z += 2;
+    camera.position.x += 3;
+    camera.position.z += 3;
     camera.position.y += 4; // Adjust the height of the camera
 
     // Render the scene
