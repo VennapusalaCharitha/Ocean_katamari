@@ -12,7 +12,7 @@ let gameStarted = false;
 let modelsCollected = 0;
 let speedFactor = 0.01;
 const acceleration = 0.001;
-let friction = 0.9999;
+let friction = 0.99;
 let gameControl = true;
 let flashTimer = 0;
 let blinkTimer = 0;
@@ -149,14 +149,7 @@ const updateModelPosition = () => {
   });
   if (collectedModels.length === 0) {
     // Spawn five more models in random locations
-    for (let i = 0; i < 5; i++) {
       loadRandomModels();
-    }
-  }
-
-  // Check if all models are collected
-  if (collectedModels.length === 0) {
-    gameOver();
   }
 };
 
