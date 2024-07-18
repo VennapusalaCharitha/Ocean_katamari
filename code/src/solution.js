@@ -16,7 +16,7 @@ let friction = 0.99;
 let gameControl = true;
 let flashTimer = 0;
 let blinkTimer = 0;
-let scoreElement=0;
+let scoreElement = 0;
 let highScoreElement;
 let highScore;
 const blinkDuration = 1; // Blink duration in seconds
@@ -78,28 +78,28 @@ const updateModelPosition = () => {
   let moveZ = 0;
 
   if (keysPressed['ArrowUp']) {
-    if (speedFactor<0.2){
+    if (speedFactor < 0.2) {
       speedFactor += acceleration;
     }
     moveZ -= speedFactor;
     moveX -= speedFactor;
   }
   if (keysPressed['ArrowDown']) {
-    if (speedFactor<0.2){
+    if (speedFactor < 0.2) {
       speedFactor += acceleration;
     }
     moveZ += speedFactor;
     moveX += speedFactor;
   }
   if (keysPressed['ArrowLeft']) {
-    if (speedFactor<0.2){
+    if (speedFactor < 0.2) {
       speedFactor += acceleration;
     }
     moveZ += speedFactor;
     moveX -= speedFactor;
   }
   if (keysPressed['ArrowRight']) {
-    if (speedFactor<0.2){
+    if (speedFactor < 0.2) {
       speedFactor += acceleration;
     }
     moveZ -= speedFactor;
@@ -113,7 +113,7 @@ const updateModelPosition = () => {
   }
 
   speedFactor *= friction;
-  if(speedFactor<0){
+  if (speedFactor < 0) {
     speedFactor = 0;
   }
   // Update position within boundary
@@ -139,7 +139,7 @@ const updateModelPosition = () => {
       scene.remove(model);
       blinkTimer = blinkDuration; // Start the blink timer
       modelsCollected++;
-      timerSeconds+=1; 
+      timerSeconds += 1;
       updateScoreDisplay();
       updateHighScore();
       increaseTimerDisplay(); // Inform the player about the time increase
@@ -149,7 +149,7 @@ const updateModelPosition = () => {
   });
   if (collectedModels.length === 0) {
     // Spawn five more models in random locations
-      loadRandomModels();
+    loadRandomModels();
   }
 };
 
@@ -163,7 +163,7 @@ const increaseTimerDisplay = () => {
   increaseElement.style.position = 'absolute';
   increaseElement.style.top = '15px'; // Adjust top position
   increaseElement.style.left = '50%';
-  increaseElement.style.transform = 'translateX(60px)'; 
+  increaseElement.style.transform = 'translateX(60px)';
   increaseElement.style.fontSize = '24px';
   increaseElement.style.fontFamily = 'Roboto, sans-serif';
   increaseElement.style.fontWeight = 'bold';
@@ -251,7 +251,6 @@ window.init = async () => {
   // Add random models
   const loadRandomModels = async () => {
     const modelPaths = [
-      './assets/1/scene.gltf',
       './assets/2/scene.gltf',
       './assets/3/scene.gltf',
       './assets/4/scene.gltf',
@@ -271,16 +270,16 @@ window.init = async () => {
 
       // Calculate bounding box for collision detection
       model.boundingBox = new THREE.Box3().setFromObject(model);
-      if (modelPath === './assets/4/scene.gltf'){
-        model.scale.set(0.1,0.1,0.1);
+      if (modelPath === './assets/4/scene.gltf') {
+        model.scale.set(0.1, 0.1, 0.1);
       }
 
-      if (modelPath === './assets/1/scene.gltf'){
-        model.scale.set(3,3,3);
+      if (modelPath === './assets/1/scene.gltf') {
+        model.scale.set(3, 3, 3);
       }
 
-      if (modelPath === './assets/5/scene.gltf'){
-        model.scale.set(3,3,3);
+      if (modelPath === './assets/5/scene.gltf') {
+        model.scale.set(3, 3, 3);
       }
 
       scene.add(model);
@@ -325,18 +324,18 @@ window.init = async () => {
 
 
   // Create and append score element to the document
-   scoreElement = document.createElement('div');
-   scoreElement.textContent = `Score: ${modelsCollected}`;
-   scoreElement.style.position = 'absolute';
-   scoreElement.style.top = '10px'; // Adjust top position
-   scoreElement.style.right = '10px'; // Adjust right position
-   scoreElement.style.fontSize = '24px';
-   scoreElement.style.fontFamily = 'Roboto, sans-serif';
-   scoreElement.style.fontWeight = 'bold';
-   scoreElement.style.color = 'white';
-   document.body.appendChild(scoreElement);
+  scoreElement = document.createElement('div');
+  scoreElement.textContent = `Score: ${modelsCollected}`;
+  scoreElement.style.position = 'absolute';
+  scoreElement.style.top = '10px'; // Adjust top position
+  scoreElement.style.right = '10px'; // Adjust right position
+  scoreElement.style.fontSize = '24px';
+  scoreElement.style.fontFamily = 'Roboto, sans-serif';
+  scoreElement.style.fontWeight = 'bold';
+  scoreElement.style.color = 'white';
+  document.body.appendChild(scoreElement);
 
-     // Create and append high score element to the document
+  // Create and append high score element to the document
   highScoreElement = document.createElement('div');
   highScoreElement.textContent = `High Score: ${localStorage.getItem('highScore') || 0}`;
   highScoreElement.style.position = 'absolute';
@@ -348,79 +347,79 @@ window.init = async () => {
   highScoreElement.style.color = 'white';
   document.body.appendChild(highScoreElement);
 
-    // Create mini-map canvas
-    const miniMapCanvas = document.createElement('canvas');
-    miniMapCanvas.width = 200;
-    miniMapCanvas.height = 200;
-    miniMapCanvas.style.position = 'absolute';
-    miniMapCanvas.style.bottom = '10px';
-    miniMapCanvas.style.left = '10px';
-    miniMapCanvas.style.border = '1px solid white';
-    miniMapCanvas.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Example: semi-transparent black
-    document.body.appendChild(miniMapCanvas);
-  
-    // Get 2D context of mini-map canvas
-    const miniMapContext = miniMapCanvas.getContext('2d');
-  
-    // Render mini-map
-    const renderMiniMap = () => {
-      miniMapContext.clearRect(0, 0, miniMapCanvas.width, miniMapCanvas.height);
-  
-      const centerX = miniMapCanvas.width / 2;
-      const centerY = miniMapCanvas.height / 2;
-      const radius = Math.min(centerX, centerY) - 5; // Subtracting 5 to leave some padding
-      
-      // Render circular boundary
-      miniMapContext.strokeStyle = 'white';
-      miniMapContext.lineWidth = 2;
-      miniMapContext.beginPath();
-      miniMapContext.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      miniMapContext.stroke();
-  
-      // Render objects and player position
-      scene.traverse((object) => {
-        const posX = centerX + (object.position.x / 200) * radius;
-        const posY = centerY + (object.position.z / 200) * radius;
-  
-        if (object !== porsche) {
-          // Render objects
-          miniMapContext.fillStyle = 'red';
-          miniMapContext.beginPath();
-          miniMapContext.arc(posX, posY, 3, 0, Math.PI * 2);
-          miniMapContext.fill();
-        } else {
-          // Render player position
-          miniMapContext.fillStyle = 'blue';
-          miniMapContext.beginPath();
-          miniMapContext.arc(posX, posY, 5, 0, Math.PI * 2);
-          miniMapContext.fill();
-        }
-      });
-    };
-  
-  
-    // Main loop
-    const mainLoop = () => {
-      if (porsche) {
-        if (gameControl) {
-          updateModelPosition();
-          blinkModel();
-        }
-  
-        camera.position.copy(porsche.position);
-        camera.position.x += 2;
-        camera.position.z += 2;
-        camera.position.y += 4;
-  
-        renderer.render(scene, camera);
-  
-        renderMiniMap();
+  // Create mini-map canvas
+  const miniMapCanvas = document.createElement('canvas');
+  miniMapCanvas.width = 200;
+  miniMapCanvas.height = 200;
+  miniMapCanvas.style.position = 'absolute';
+  miniMapCanvas.style.bottom = '10px';
+  miniMapCanvas.style.left = '10px';
+  miniMapCanvas.style.border = '1px solid white';
+  miniMapCanvas.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Example: semi-transparent black
+  document.body.appendChild(miniMapCanvas);
+
+  // Get 2D context of mini-map canvas
+  const miniMapContext = miniMapCanvas.getContext('2d');
+
+  // Render mini-map
+  const renderMiniMap = () => {
+    miniMapContext.clearRect(0, 0, miniMapCanvas.width, miniMapCanvas.height);
+
+    const centerX = miniMapCanvas.width / 2;
+    const centerY = miniMapCanvas.height / 2;
+    const radius = Math.min(centerX, centerY) - 5; // Subtracting 5 to leave some padding
+
+    // Render circular boundary
+    miniMapContext.strokeStyle = 'white';
+    miniMapContext.lineWidth = 2;
+    miniMapContext.beginPath();
+    miniMapContext.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    miniMapContext.stroke();
+
+    // Render objects and player position
+    scene.traverse((object) => {
+      const posX = centerX + (object.position.x / 200) * radius;
+      const posY = centerY + (object.position.z / 200) * radius;
+
+      if (object !== porsche) {
+        // Render objects
+        miniMapContext.fillStyle = 'red';
+        miniMapContext.beginPath();
+        miniMapContext.arc(posX, posY, 3, 0, Math.PI * 2);
+        miniMapContext.fill();
+      } else {
+        // Render player position
+        miniMapContext.fillStyle = 'blue';
+        miniMapContext.beginPath();
+        miniMapContext.arc(posX, posY, 5, 0, Math.PI * 2);
+        miniMapContext.fill();
       }
-      requestAnimationFrame(mainLoop);
-    };
-  
-    mainLoop();
-  
+    });
+  };
+
+
+  // Main loop
+  const mainLoop = () => {
+    if (porsche) {
+      if (gameControl) {
+        updateModelPosition();
+        blinkModel();
+      }
+
+      camera.position.copy(porsche.position);
+      camera.position.x += 2;
+      camera.position.z += 2;
+      camera.position.y += 4;
+
+      renderer.render(scene, camera);
+
+      renderMiniMap();
+    }
+    requestAnimationFrame(mainLoop);
+  };
+
+  mainLoop();
+
 
   window.addEventListener('keydown', handleKeyDown);
   window.addEventListener('keyup', handleKeyUp);

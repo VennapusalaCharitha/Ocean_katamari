@@ -23,7 +23,7 @@ const loop = (time) => {
   if (!_hasInited) {
     if (window.init) {
       _hasInited = true;
-      
+
       window.init();
     }
   }
@@ -61,8 +61,6 @@ window.loadShader = async ({ gl, name, type }) => {
   return shader;
 };
 
-// Add a listener to the global window object for the page load.
-// See: https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onload)
 window.onload = () => {
   // add handlers
   document.addEventListener('keydown', (event) => {
@@ -77,7 +75,5 @@ window.onload = () => {
   // attach the solution script
   attachScript();
 
-  // start render loop
-  // https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
   window.requestAnimationFrame(loop);
 };
